@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link data-require="bootstrap@4.0.5" data-semver="4.1.3" rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" />
+    <script data-require="bootstrap@4.0.5" data-semver="4.1.3" src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script data-require="angular.js@1.6.6" data-semver="1.6.6" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
+
+    <script src="app.js"></script>
+    <script src="directives/default_directives.js"></script>
+    <script src="directives/form_directives.js"></script>
+    <script src="directives/table_directives.js"></script>
+    <script src="controllers.js"></script>
+    <script src="services.js"></script>
+  </head>
+
+  <body ng-app="todo" ng-controller="TodoCtrl">
+    <div class="container">
+      <main-title></main-title>
+
+      <search-form></search-form>
+
+      <table-header></table-header>
+      <table-content></table-content>
+
+      <person-form></person-form>
+
+      <div class="row button-row">
+        <button ng-click="showAddSection()" class="btn btn-success add-btn">직원 추가</button>
+        <button ng-click="remove()" class="btn btn-danger delete-btn">선택 항목 삭제</button>
+      </div>
+    </div>
+  </body>
+
+</html>
