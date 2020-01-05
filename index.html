@@ -17,7 +17,7 @@
     <script src="services.js"></script>
   </head>
 
-  <body ng-app="todo" ng-controller="TodoCtrl">
+  <body ng-app="people" ng-controller="PeopleCtrl">
     <div class="container">
       <main-title></main-title>
 
@@ -28,10 +28,7 @@
 
       <person-form></person-form>
 
-      <div class="row button-row">
-        <button ng-click="showAddSection()" class="btn btn-success add-btn">직원 추가</button>
-        <button ng-click="remove()" class="btn btn-danger delete-btn">선택 항목 삭제</button>
-      </div>
+      <button-group></button-group>
     </div>
   </body>
 

@@ -1,1 +1,1 @@
-angular.module('todo', []);
+angular.module('people', []);

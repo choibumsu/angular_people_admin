@@ -1,5 +1,5 @@
-angular.module('todo').factory('todoStorage', function () {
-  var TODO_DATA = 'TODO_DATA';
+angular.module('people').factory('peopleStorage', function () {
+  var PEOPLE_DATA = 'PEOPLE_DATA';
   var storage = {
     people: [
       {
@@ -8,13 +8,7 @@ angular.module('todo').factory('todoStorage', function () {
         age: 25,
         address: "서울시 용산구",
         checked: false,
-      },
-      {
-        name: "안효경",
-        gender: "여",
-        age: 25,
-        address: "서울시 동작구",
-        checked: false,
+        updatable : false,
       },
       {
         name: "유인근",
@@ -22,6 +16,7 @@ angular.module('todo').factory('todoStorage', function () {
         age: 25,
         address: "서울시 동작구",
         checked: false,
+        updatable : false,
       },
       {
         name: "김정빈",
@@ -29,6 +24,7 @@ angular.module('todo').factory('todoStorage', function () {
         age: 25,
         address: "서울시 동작구",
         checked: false,
+        updatable : false,
       },
       {
         name: "조원희",
@@ -36,6 +32,7 @@ angular.module('todo').factory('todoStorage', function () {
         age: 26,
         address: "서울시 동작구",
         checked: false,
+        updatable : false,
       },
       {
         name: "이성민",
@@ -43,6 +40,7 @@ angular.module('todo').factory('todoStorage', function () {
         age: 23,
         address: "서울시 동작구",
         checked: false,
+        updatable : false,
       },
       {
         name: "정모세",
@@ -50,6 +48,7 @@ angular.module('todo').factory('todoStorage', function () {
         age: 25,
         address: "경기도 수원시",
         checked: false,
+        updatable : false,
       },
       {
         name: "조종현",
@@ -57,19 +56,25 @@ angular.module('todo').factory('todoStorage', function () {
         age: 25,
         address: "서울시 동작구",
         checked: false,
+        updatable : false,
       }
     ],
     
     _saveToLocalStorage: function (data) {
-      localStorage.setItem(TODO_DATA, JSON.stringify(data));
+      localStorage.setItem(PEOPLE_DATA, JSON.stringify(data));
     },
     
     _getFromLocalStorage: function () {
-      return JSON.parse(localStorage.getItem(TODO_DATA)) || [];
+      return JSON.parse(localStorage.getItem(PEOPLE_DATA)) || [];
     },
       
     get: function () {
-      //angular.copy(storage._getFromLocalStorage(), storage.todos);
+      //For test
+      if(storage._getFromLocalStorage() == "") {
+        storage._saveToLocalStorage(storage.people);
+      }
+      //--
+      angular.copy(storage._getFromLocalStorage(), storage.people);
       return storage.people;
     },
     
@@ -79,16 +84,18 @@ angular.module('todo').factory('todoStorage', function () {
           storage.people.splice(i, 1);
         }
       }
-        
+      storage._saveToLocalStorage(storage.people);
     },
     
     add: function (newPerson) {
+      newPerson['checked'] = false;
+      newPerson['updatable'] = false;
       storage.people.push(newPerson);
       storage._saveToLocalStorage(storage.people);
     },
     
     update: function () {
-      storage._saveToLocalStorage(storage.todos);
+      storage._saveToLocalStorage(storage.people);
     }
   };
   
