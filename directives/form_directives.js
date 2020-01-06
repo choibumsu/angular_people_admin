@@ -41,7 +41,7 @@ angular.module('people').directive('personForm', function () {
           <input type="text" ng-model="newPerson.address" class="col-5 table-content-col">
         </div>
         <div ng-show="addable == false">
-          <div class="alert alert-warning" role="alert">{{ valueErrorMsg }}</div>
+          <div class="alert alert-warning" role="alert">{{ addErrorMsg }}</div>
         </div>
         <div class="row button-row">
           <button type="submit" class="btn btn-success person-submit-btn">제출</button>
