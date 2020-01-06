@@ -5,11 +5,126 @@ angular.module('people').factory('peopleStorage', function () {
 
     people: [],
     
-    _saveToLocalStorage: function (data) {
-      localStorage.setItem(PEOPLE_DATA, JSON.stringify(data));
-    },
-    
     get: function () {
+      // storage.people = [
+      //   {
+      //     name: "유인근",
+      //     gender: "남",
+      //     age: 25,
+      //     address: "서울시 동작구",
+      //     checked: false,
+      //     updatable : false,
+      //   },
+      //   {
+      //     name: "유인근",
+      //     gender: "남",
+      //     age: 25,
+      //     address: "서울시 동작구",
+      //     checked: false,
+      //     updatable : false,
+      //   },
+      //   {
+      //     name: "유인근",
+      //     gender: "남",
+      //     age: 25,
+      //     address: "서울시 동작구",
+      //     checked: false,
+      //     updatable : false,
+      //   },
+      //   {
+      //     name: "유인근",
+      //     gender: "남",
+      //     age: 25,
+      //     address: "서울시 동작구",
+      //     checked: false,
+      //     updatable : false,
+      //   },
+      //   {
+      //     name: "유인근",
+      //     gender: "남",
+      //     age: 25,
+      //     address: "서울시 동작구",
+      //     checked: false,
+      //     updatable : false,
+      //   },
+      //   {
+      //     name: "유인근",
+      //     gender: "남",
+      //     age: 25,
+      //     address: "서울시 동작구",
+      //     checked: false,
+      //     updatable : false,
+      //   },
+      //   {
+      //     name: "유인근",
+      //     gender: "남",
+      //     age: 25,
+      //     address: "서울시 동작구",
+      //     checked: false,
+      //     updatable : false,
+      //   },
+      //   {
+      //     name: "유인근",
+      //     gender: "남",
+      //     age: 25,
+      //     address: "서울시 동작구",
+      //     checked: false,
+      //     updatable : false,
+      //   },
+      //   {
+      //     name: "유인근",
+      //     gender: "남",
+      //     age: 25,
+      //     address: "서울시 동작구",
+      //     checked: false,
+      //     updatable : false,
+      //   },
+      //   {
+      //     name: "유인근",
+      //     gender: "남",
+      //     age: 25,
+      //     address: "서울시 동작구",
+      //     checked: false,
+      //     updatable : false,
+      //   },
+      //         {
+      //     name: "유인근",
+      //     gender: "남",
+      //     age: 25,
+      //     address: "서울시 동작구",
+      //     checked: false,
+      //     updatable : false,
+      //   },
+      //   {
+      //     name: "유인근",
+      //     gender: "남",
+      //     age: 25,
+      //     address: "서울시 동작구",
+      //     checked: false,
+      //     updatable : false,
+      //   },
+      // ]
+
+      // return storage.people;
+
+      // const getEmployeesInfo = async () => {
+      //   await axios.get('/employees/')
+      //     .then((res) => {
+      //       angular.copy(res.data, storage.people);
+      //       console.log("통신부분")
+      //       console.log("조회 완료", res);
+      //     })
+      //     .catch(function (err) {
+      //       console.log("GET FAIL", err);
+      //     });
+      //   }
+      //   getEmployeesInfo().then(
+      //       () => {
+      //         console.log(storage.people);
+      //         return storage.people;
+      //       }
+      //   )
+
       axios.get('/employees/')
         .then((res) => {
           angular.copy(res.data, storage.people);
@@ -19,6 +134,7 @@ angular.module('people').factory('peopleStorage', function () {
           console.log("GET FAIL", err);
         });
       return storage.people;
+
     },
 
     remove: function () {

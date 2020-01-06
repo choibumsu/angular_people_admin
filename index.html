@@ -10,6 +10,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.14.3/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
     <link rel="stylesheet" href="style.css" />
 
     <script src="app.js"></script>
@@ -31,11 +32,15 @@
       </div>
       
       <table-header></table-header>
-      <table-content></table-content>
-
+      <div table-content></div>
+      
       <person-form></person-form>
 
       <button-group></button-group>
+      <form id="ajaxFrom" method="post">
+        <input type="file" id="ajaxFile"/>
+        <input type="button" onClick="ajaxFileUpload();" value="업로드" class="btn btn-primary"/>
+    </form>
 
       <div class="row page-row">
         <button ng-click="prePage()" class="btn btn-light btn-sm page-btn">&laquo;</button>
@@ -48,4 +53,23 @@
     </div>
   </body>
 
+  <script type="text/javascript">
+    function ajaxFileUpload() {
+
+        axios.defaults.baseURL = 'http://localhost:8000/api';
+
+        var form = jQuery("#ajaxFrom")[0];
+        var formData = new FormData(form);
+        formData.append("message", "ajax로 파일 전송하기");
+        formData.append("file", jQuery("#ajaxFile")[0].files[0]);
+
+        axios.post('employees/', formData)
+        .then((res) => {
+          alert("파일 업로드 완료", res);
+        })
+        .catch(function (err) {
+          console.log("CREATE FAIL", err);
+        });
+    }
+</script>
 </html>

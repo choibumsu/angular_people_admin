@@ -9,6 +9,8 @@ angular.module('people').controller('PeopleCtrl', function($scope, peopleStorage
   $scope.people = peopleStorage.get();
 
   $scope.updatePageNums = function (startPageNum) {
+    console.log(`people : ${$scope.people}`);
+    console.log("페이지네이션 부분")
     $scope.pageNums = [];
 
     if($scope.queryName != "") {
@@ -23,6 +25,7 @@ angular.module('people').controller('PeopleCtrl', function($scope, peopleStorage
         break;
     }
   };
+
   $scope.currPageNum = 1;
   $scope.updatePageNums($scope.currPageNum);
   $scope.startIndex = 0;
