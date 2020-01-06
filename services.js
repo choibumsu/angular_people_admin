@@ -2,7 +2,12 @@ angular.module('people').factory('peopleStorage', function () {
   axios.defaults.baseURL = 'http://localhost:8000/api';
 
   var storage = {
+
     people: [],
+    
+    _saveToLocalStorage: function (data) {
+      localStorage.setItem(PEOPLE_DATA, JSON.stringify(data));
+    },
     
     get: function () {
       axios.get('/employees/')
@@ -18,10 +23,16 @@ angular.module('people').factory('peopleStorage', function () {
 
     remove: function () {
       var employee_id;
+      var updatable = true;
       for (var i = storage.people.length - 1; i >= 0; i--) {
         if (storage.people[i].checked) {
           employee_id = storage.people[i].id;
           storage.people.splice(i, 1);
+        }
+        else {
+          if(storage.people[i].updatable) {
+            updatable = false;
+          }
         }
       }
 
@@ -32,6 +43,7 @@ angular.module('people').factory('peopleStorage', function () {
       .catch(function (err) {
         console.log("DELETE FAIL", err);
       });
+      return updatable;
     },
     
     add: function (newPerson) {
