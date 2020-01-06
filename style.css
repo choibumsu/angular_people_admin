@@ -75,3 +75,15 @@
   font-size : 13px;
   padding : 5px 10px;
 }
+
+.page-row {
+  margin-top : 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page-btn {
+  margin : 2px;
+  width : 35px;
+}

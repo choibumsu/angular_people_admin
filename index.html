@@ -31,6 +31,15 @@
       <person-form></person-form>
 
       <button-group></button-group>
+
+      <div class="row page-row">
+        <button ng-click="prePage()" class="btn btn-light btn-sm page-btn">&laquo;</button>
+        <div ng-repeat="pageNum in pageNums">
+          <button ng-if="pageNum != currPageNum" ng-click="movePage(pageNum)" class="btn btn-light btn-sm page-btn">{{ pageNum }}</button>
+          <button ng-if="pageNum == currPageNum" ng-click="movePage(pageNum)" class="btn btn-light btn-sm page-btn active">{{ pageNum }}</button>
+        </div>
+        <button ng-click="nextPage()" class="btn btn-light btn-sm page-btn">&raquo</button>
+      </div>
     </div>
   </body>
 

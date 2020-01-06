@@ -28,7 +28,7 @@ angular.module('people').directive('tableHeader', function () {
 angular.module('people').directive('tableContent', function () {
     return {
       template: `
-        <div ng-repeat="person in people | filter:searchFilter" class="table-content">
+        <div ng-repeat="person in people | filter:searchFilter" ng-if="$index >= startIndex && $index <= endIndex" class="table-content">
             <div ng-hide="person.updatable" class="row">
                 <div class="col-1 table-content-col">
                     <input type="checkbox" ng-model="person.checked">

@@ -4,6 +4,19 @@ angular.module('people').controller('PeopleCtrl', function($scope, peopleStorage
   $scope.valueErrorMsg = "";
   $scope.people = peopleStorage.get();
 
+  $scope.updatePageNums = function (startPageNum) {
+    $scope.pageNums = [];
+    for(var i = startPageNum - 1; i < $scope.people.length / 10; i++) {
+      $scope.pageNums.push(i + 1);
+      if($scope.pageNums.length == 10) 
+        break;
+    }
+  };
+  $scope.currPageNum = 1;
+  $scope.updatePageNums($scope.currPageNum);
+  $scope.startIndex = 0;
+  $scope.endIndex = 9;
+
   $scope.initNewPerson = function () {
     return {
         name: "",
@@ -34,19 +47,19 @@ angular.module('people').controller('PeopleCtrl', function($scope, peopleStorage
     }
 
     peopleStorage.update();
-  }
+  };
 
   $scope.excelDownload = function () {
     peopleStorage.excelDownload();
-  }
+  };
 
   $scope.showAddSection = function () {
     $scope.showAdd = true;
-  }
+  };
 
   $scope.hideAddSection = function () {
     $scope.showAdd = false;
-  }
+  };
 
   $scope.validatePerson = function (person) {
     if(person.name.length == 0) {
@@ -66,5 +79,33 @@ angular.module('people').controller('PeopleCtrl', function($scope, peopleStorage
       return false;
     }
     return true;
+  };
+
+  $scope.movePage = function (pageNum) {
+    $scope.startIndex = (pageNum - 1) * 10;
+    $scope.endIndex = pageNum * 10 - 1;
+    $scope.currPageNum = pageNum;
+  };
+
+  $scope.prePage = function () {
+    var startPageNum = $scope.pageNums[0];
+
+    if(startPageNum - 10 < 0) {
+      return;
+    }
+    startPageNum -= 10;
+    $scope.updatePageNums(startPageNum);
+    $scope.movePage($scope.pageNums[$scope.pageNums.length - 1]);
+  }
+
+  $scope.nextPage = function () {
+    var startPageNum = $scope.pageNums[0];
+
+    if(startPageNum + 10 > $scope.people.length / 10) {
+      return;
+    }
+    startPageNum += 10;
+    $scope.updatePageNums(startPageNum);
+    $scope.movePage($scope.pageNums[0]);
   }
 });
