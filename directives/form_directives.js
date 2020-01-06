@@ -2,7 +2,7 @@ angular.module('people').directive('searchForm', function () {
     return {
       template: `
         <div class="row">
-            <form name="searchForm" ng-submit="searchFilter={name:queryName}" class="search-form">
+            <form name="searchForm" ng-submit="searchFilter={name:queryName}; updatePageNums(1); movePage(1);" class="search-form">
                 <div class="input-group">
                 <input type="text" class="form-control" ng-model="queryName" placeholder="이름으로 검색해주세요.">
                 <div class="input-group-append">

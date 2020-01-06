@@ -1,4 +1,5 @@
 angular.module('people').controller('PeopleCtrl', function($scope, peopleStorage) {
+  $scope.queryName = "";
   $scope.showAdd = false;
   $scope.addable = true;
   $scope.addErrorMsg = "";
@@ -9,7 +10,14 @@ angular.module('people').controller('PeopleCtrl', function($scope, peopleStorage
 
   $scope.updatePageNums = function (startPageNum) {
     $scope.pageNums = [];
-    for(var i = startPageNum - 1; i < $scope.people.length / 10; i++) {
+
+    if($scope.queryName != "") {
+      var peopleLength = $scope.people.filter(person => person.name.includes($scope.queryName)).length;
+    }
+    else {
+      var peopleLength = $scope.people.length;
+    }
+    for(var i = startPageNum - 1; i < peopleLength / 10; i++) {
       $scope.pageNums.push(i + 1);
       if($scope.pageNums.length == 10) 
         break;
@@ -31,7 +39,14 @@ angular.module('people').controller('PeopleCtrl', function($scope, peopleStorage
   $scope.newPerson = $scope.initNewPerson();
   
   $scope.remove = function() {
-    peopleStorage.remove();
+    if(peopleStorage.remove() == true) {
+      $scope.updatable = true;
+      $scope.showUpdateError = false;
+      $scope.updateErrorMsg = "";
+      $scope.updatePageNums(1);
+      if($scope.startIndex == $scope.people.length)
+        $scope.movePage($scope.currPageNum - 1);
+    }
   };
   
   $scope.add = function (newPerson) {
@@ -101,13 +116,25 @@ angular.module('people').controller('PeopleCtrl', function($scope, peopleStorage
     return true;
   };
 
+  $scope.checkPageMovable = function () {
+    if($scope.updatable == false) {
+      $scope.updateErrorMsg = "현재 진행중인 수정을 완료해주세요.";
+      $scope.showUpdateError = true;
+      return false;
+    }
+    return true;
+  }
+
   $scope.movePage = function (pageNum) {
+    if($scope.checkPageMovable() == false) return;
+
     $scope.startIndex = (pageNum - 1) * 10;
     $scope.endIndex = pageNum * 10 - 1;
     $scope.currPageNum = pageNum;
   };
 
   $scope.prePage = function () {
+    if($scope.checkPageMovable() == false) return;
     var startPageNum = $scope.pageNums[0];
 
     if(startPageNum - 10 < 0) {
@@ -119,6 +146,7 @@ angular.module('people').controller('PeopleCtrl', function($scope, peopleStorage
   }
 
   $scope.nextPage = function () {
+    if($scope.checkPageMovable() == false) return;
     var startPageNum = $scope.pageNums[0];
 
     if(startPageNum + 10 > $scope.people.length / 10) {
