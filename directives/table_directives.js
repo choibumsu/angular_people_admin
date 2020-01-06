@@ -47,7 +47,7 @@ angular.module('people').directive('tableContent', function () {
                 </div>
 
                 <div class="col-1 table-content-col">
-                    <button ng-click="person.updatable = true" class="btn btn-success person-update-btn">수정</button>
+                    <button ng-click="prepareUpdate(person)" class="btn btn-success person-update-btn">수정</button>
                 </div>
             </div>
             <form name="personUpdateForm" ng-show="person.updatable" ng-submit="update(person)" class="row update-row">
@@ -59,7 +59,7 @@ angular.module('people').directive('tableContent', function () {
                 <input ng-model="person.age" class="col-1 table-content-col" />
                 <input ng-model="person.address" class="col-5 table-content-col" />
                 <div class="col-1 table-content-col">
-                    <button type="submit" ng-click="person.updatable = false" class="btn btn-warning person-update-btn">제출</button>
+                    <button type="submit" class="btn btn-warning person-update-btn">제출</button>
                 </div>
             </form>
         </div>
