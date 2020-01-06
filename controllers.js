@@ -28,8 +28,16 @@ angular.module('people').controller('PeopleCtrl', function($scope, peopleStorage
       $scope.addable = false;
   };
   
-  $scope.update = function () {
+  $scope.update = function (person) {
+    if($scope.validatePerson(person) == false) {
+      $scope.updatable = false;
+    }
+
     peopleStorage.update();
+  }
+
+  $scope.excelDownload = function () {
+    peopleStorage.excelDownload();
   }
 
   $scope.showAddSection = function () {

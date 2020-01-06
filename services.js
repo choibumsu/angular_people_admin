@@ -67,7 +67,7 @@ angular.module('people').factory('peopleStorage', function () {
     _getFromLocalStorage: function () {
       return JSON.parse(localStorage.getItem(PEOPLE_DATA)) || [];
     },
-      
+
     get: function () {
       //For test
       if(storage._getFromLocalStorage() == "") {
@@ -77,7 +77,7 @@ angular.module('people').factory('peopleStorage', function () {
       angular.copy(storage._getFromLocalStorage(), storage.people);
       return storage.people;
     },
-    
+
     remove: function () {
       for (var i = storage.people.length - 1; i >= 0; i--) {
         if (storage.people[i].checked) {
@@ -96,8 +96,75 @@ angular.module('people').factory('peopleStorage', function () {
     
     update: function () {
       storage._saveToLocalStorage(storage.people);
+    },
+
+    getPureData: function () {
+      neededKeys = ['name', 'gender', 'age', 'address'];
+      origin_people = storage.get();
+      purePeople= [];
+
+      for(i in origin_people) {
+        purePeople.push({});
+        for(key in origin_people[i]) {
+          if(neededKeys.includes(key)) {
+            purePeople[i][key] = origin_people[i][key];
+          }
+        }
+      }
+
+      return purePeople;
+    },
+
+    convertJsonToCsv : function(json_array) {
+      csv_data = [];
+      header = [];
+
+      for(key in json_array[0]) {
+        header.push(key);
+      }
+      csv_data.push(header);
+      
+      for(i in json_array) {
+        data = [];
+        for(key in json_array[i]) {
+          data.push(json_array[i][key]);
+        }
+        csv_data.push(data);
+      }
+
+      return csv_data;
+    },
+
+    excelDownload: function () {
+      var wb = XLSX.utils.book_new();
+      var data = storage.getPureData();
+
+      var newWorksheet = excelHandler.getWorksheet(storage.convertJsonToCsv(data));
+      XLSX.utils.book_append_sheet(wb, newWorksheet, excelHandler.getSheetName());
+  
+      var wbout = XLSX.write(wb, {bookType:'xlsx',  type: 'binary'});
+      saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), excelHandler.getExcelFileName());
     }
   };
+
+  var excelHandler = {
+		getExcelFileName : function(){
+		    return 'people_list.xlsx';
+		},
+		getSheetName : function(){
+			return '직원 명단';
+    },
+		getWorksheet : function(data){
+			return XLSX.utils.aoa_to_sheet(data);
+    }
+  }
+
+  function s2ab(s) { 
+    var buf = new ArrayBuffer(s.length); //convert s to arrayBuffer
+    var view = new Uint8Array(buf);  //create uint8array as viewer
+    for (var i=0; i<s.length; i++) view[i] = s.charCodeAt(i) & 0xFF; //convert to octet
+    return buf;    
+  }
   
   return storage;
 });

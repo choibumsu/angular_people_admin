@@ -50,7 +50,7 @@ angular.module('people').directive('tableContent', function () {
                     <button ng-click="person.updatable = true" class="btn btn-success person-update-btn">수정</button>
                 </div>
             </div>
-            <form name="personUpdateForm" ng-show="person.updatable" ng-submit="update()" class="row update-row">
+            <form name="personUpdateForm" ng-show="person.updatable" ng-submit="update(person)" class="row update-row">
                 <div class="col-1 table-content-col">
                     <input type="checkbox" ng-model="person.checked">
                 </div>
