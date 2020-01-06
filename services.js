@@ -1,101 +1,78 @@
 angular.module('people').factory('peopleStorage', function () {
-  var PEOPLE_DATA = 'PEOPLE_DATA';
+  axios.defaults.baseURL = 'http://localhost:8000/api';
+
   var storage = {
-    people: [
-      {
-        name: "최범수",
-        gender: "남",
-        age: 25,
-        address: "서울시 용산구",
-        checked: false,
-        updatable : false,
-      },
-      {
-        name: "유인근",
-        gender: "남",
-        age: 25,
-        address: "서울시 동작구",
-        checked: false,
-        updatable : false,
-      },
-      {
-        name: "김정빈",
-        gender: "남",
-        age: 25,
-        address: "서울시 동작구",
-        checked: false,
-        updatable : false,
-      },
-      {
-        name: "조원희",
-        gender: "남",
-        age: 26,
-        address: "서울시 동작구",
-        checked: false,
-        updatable : false,
-      },
-      {
-        name: "이성민",
-        gender: "여",
-        age: 23,
-        address: "서울시 동작구",
-        checked: false,
-        updatable : false,
-      },
-      {
-        name: "정모세",
-        gender: "남",
-        age: 25,
-        address: "경기도 수원시",
-        checked: false,
-        updatable : false,
-      },
-      {
-        name: "조종현",
-        gender: "남",
-        age: 25,
-        address: "서울시 동작구",
-        checked: false,
-        updatable : false,
-      }
-    ],
+    people: [],
     
-    _saveToLocalStorage: function (data) {
-      localStorage.setItem(PEOPLE_DATA, JSON.stringify(data));
-    },
-    
-    _getFromLocalStorage: function () {
-      return JSON.parse(localStorage.getItem(PEOPLE_DATA)) || [];
-    },
-      
     get: function () {
-      //For test
-      if(storage._getFromLocalStorage() == "") {
-        storage._saveToLocalStorage(storage.people);
-      }
-      //--
-      angular.copy(storage._getFromLocalStorage(), storage.people);
+      axios.get('/employees/')
+        .then((res) => {
+          angular.copy(res.data, storage.people);
+          console.log("조회 완료", res);
+        })
+        .catch(function (err) {
+          console.log("GET FAIL", err);
+        });
       return storage.people;
     },
     
     remove: function () {
+      var employee_id;
       for (var i = storage.people.length - 1; i >= 0; i--) {
         if (storage.people[i].checked) {
+          employee_id = storage.people[i].id;
           storage.people.splice(i, 1);
         }
       }
-      storage._saveToLocalStorage(storage.people);
+
+      axios.delete('/employees/' + String(employee_id) + '/')
+      .then((res) => {
+        alert("제거 완료");
+      })
+      .catch(function (err) {
+        console.log("DELETE FAIL", err);
+      });
     },
     
     add: function (newPerson) {
       newPerson['checked'] = false;
       newPerson['updatable'] = false;
-      storage.people.push(newPerson);
-      storage._saveToLocalStorage(storage.people);
+      var postData = newPerson
+
+      axios.post('employees/', postData)
+        .then((res) => {
+          storage.people.push(postData);
+          alert("생성 완료", res);
+          location.reload();
+        })
+        .catch(function (err) {
+          console.log("CREATE FAIL", err);
+        });
     },
     
-    update: function () {
-      storage._saveToLocalStorage(storage.people);
+    update: function (employee) {
+      var params = {
+        name: employee.name,
+        gender: employee.gender,
+        age: employee.age,
+        address: employee.address
+      };
+      
+      axios.put('/employees/' + String(employee.id) + '/', params)
+        .then((res) => {
+          var idx = storage.people.findIndex(function (item) {
+            return item.id === employee.id;
+          })
+
+          storage.people[idx].name = employee.name;
+          storage.people[idx].gender = employee.gender;
+          storage.people[idx].age = employee.age;
+          storage.people[idx].address = employee.address;
+          alert("수정 완료");
+        })
+        .catch(function (err) {
+          console.log("PUT FAIL", err);
+        });
     }
   };
   

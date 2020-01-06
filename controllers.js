@@ -28,8 +28,8 @@ angular.module('people').controller('PeopleCtrl', function($scope, peopleStorage
       $scope.addable = false;
   };
   
-  $scope.update = function () {
-    peopleStorage.update();
+  $scope.update = function (employee) {
+    peopleStorage.update(employee);
   }
 
   $scope.showAddSection = function () {
